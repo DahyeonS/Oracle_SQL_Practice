@@ -194,7 +194,7 @@ SELECT ename, job, CASE WHEN job in ('SALESMAN', 'ANALYST') THEN 500 WHEN job IN
 
 SELECT MAX(sal) FROM emp;
 SELECT MAX(sal) FROM emp WHERE job = 'SALESMAN';
-SELECT job, MAX(sal) FROM emp WHERE job = 'SALESMAN'; -- 오류
+--SELECT job, MAX(sal) FROM emp WHERE job = 'SALESMAN'; -- 오류
 SELECT job, MAX(sal) FROM emp WHERE job = 'SALESMAN' GROUP BY job;
 SELECT deptno, MAX(sal) FROM emp GROUP BY deptno;
 
@@ -211,10 +211,10 @@ SELECT ROUND(avg(nvl(comm, 0))) FROM emp; -- 157
 
 SELECT deptno, SUM(sal) FROM emp GROUP BY deptno;
 SELECT job, SUM(sal) FROM emp GROUP BY job ORDER BY SUM(sal) DESC;
-SELECT job, SUM(sal) FROM emp WHERE SUM(sal) >= 4000 GROUP BY job; -- 오류
+--SELECT job, SUM(sal) FROM emp WHERE SUM(sal) >= 4000 GROUP BY job; -- 오류
 SELECT job, SUM(sal) FROM emp GROUP BY job HAVING SUM(sal) >= 4000;
 SELECT job, SUM(sal) FROM emp WHERE job !='SALESMAN' GROUP BY job HAVING SUM(sal) >= 4000;
-SELECT job as 직업, SUM(sal) FROM emp WHERE job != 'SALESMAN' GROUP BY 직업 HAVING SUM(sal) >= 4000; -- 오류
+--SELECT job as 직업, SUM(sal) FROM emp WHERE job != 'SALESMAN' GROUP BY 직업 HAVING SUM(sal) >= 4000; -- 오류
 
 SELECT COUNT(empno) FROM emp; -- 14
 SELECT COUNT(*) FROM emp; -- 14
@@ -320,11 +320,11 @@ SELECT empno, ename, job, sal FROM emp ORDER BY sal DESC OFFSET 9 ROWS FETCH FIR
 SELECT ename, loc FROM emp, dept WHERE emp.deptno = dept.deptno;
 SELECT ename, loc FROM emp, dept;
 SELECT ename, loc, job FROM emp, dept WHERE emp.deptno = dept.deptno and emp.job = 'ANALYST';
-SELECT ename, loc, job, deptno FROM emp, dept WHERE emp.deptno = dept.deptno and emp.job = 'ANALYST'; -- 오류
+--SELECT ename, loc, job, deptno FROM emp, dept WHERE emp.deptno = dept.deptno and emp.job = 'ANALYST'; -- 오류
 SELECT ename, loc, job, emp.deptno FROM emp, dept WHERE emp.deptno = dept.deptno and emp.job = 'ANALYST';
 SELECT emp.ename, dept.loc, emp.job, emp.deptno FROM emp, dept WHERE emp.deptno = dept.deptno and emp.job = 'ANALYST'; -- 검색 속도 향상
 SELECT e.ename, d.loc, e.job, e.deptno FROM emp e, dept d WHERE e.deptno = d.deptno and e.job = 'ANALYST';
-SELECT emp.ename, d.loc, e.job, e.deptno FROM emp e, dept d WHERE e.deptno = d.deptno and e.job = 'ANALYST'; -- 오류
+--SELECT emp.ename, d.loc, e.job, e.deptno FROM emp e, dept d WHERE e.deptno = d.deptno and e.job = 'ANALYST'; -- 오류
 
 SELECT e.ename, e.sal, s.grade FROM emp e, salgrade s WHERE e.sal between s.losal and s.hisal;
 SELECT * FROM salgrade;
@@ -389,7 +389,7 @@ SELECT ename, sal FROM emp WHERE sal = (SELECT sal FROM emp WHERE ename = 'SCOTT
 SELECT ename, sal FROM emp WHERE sal = (SELECT sal FROM emp WHERE ename = 'SCOTT') AND ename != 'SCOTT'; -- SCOTT 제외
 
 SELECT ename, sal FROM emp WHERE sal in (SELECT sal FROM emp WHERE job = 'SALESMAN');
-SELECT ename, sal FROM emp WHERE sal = (SELECT sal FROM emp WHERE job = 'SALESMAN'); -- 오류
+--SELECT ename, sal FROM emp WHERE sal = (SELECT sal FROM emp WHERE job = 'SALESMAN'); -- 오류
 
 SELECT ename, sal, job FROM emp WHERE empno not in (SELECT mgr FROM emp WHERE mgr is not null);
 SELECT ename, sal, job FROM emp WHERE empno not in (SELECT mgr FROM emp); -- NULL값으로 인해 결과가 출력되지 않음
@@ -405,7 +405,7 @@ SELECT v.ename, v.sal, v.순위 FROM (SELECT ename, sal, rank() over (order by s
 
 SELECT ename, sal, (select max(sal) from emp where job = 'SALESMAN') as "최대 월급", (select min(sal) from emp where job = 'SALESMAN') as "최소 월급"
 FROM emp WHERE job = 'SALESMAN';
-SELECT ename, sal, max(sal), min(sal) FROM emp WHERE job = 'SALESMAN'; -- 오류
+--SELECT ename, sal, max(sal), min(sal) FROM emp WHERE job = 'SALESMAN'; -- 오류
 
 INSERT INTO emp (empno, ename, sal, hiredate, job) VALUES (2812, 'JACK', 3500, TO_DATE('2019-06-05', 'RRRR-MM-DD'), 'ANALYST');
 INSERT INTO emp (empno, ename, sal) VALUES (2912, 'JANE', 4500); -- 암시적 NULL값 입력
@@ -500,7 +500,7 @@ SELECT * FROM emp WHERE job = 'SALESMAN'; -- VIEW에서 데이터를 수정하�
 
 CREATE VIEW EMP_VIEW2 AS SELECT deptno, round(avg(sal)) "평균 월급" FROM emp GROUP BY deptno; -- 그룹 함수 사용 시 반드시 칼럼 별칭 포함
 SELECT * FROM EMP_VIEW2;
-UPDATE EMP_VIEW2 SET 평균 월급 = 3000 WHERE deptno = 30; -- 오류  발생
+--UPDATE EMP_VIEW2 SET 평균 월급 = 3000 WHERE deptno = 30; -- 오류 발생
 SELECT e.ename, e.sal, e.deptno, v."평균 월급" FROM emp e, emp_view2 v WHERE e.deptno = v.deptno and e.sal > v."평균 월급"; -- 사용 가능
 
 CREATE INDEX EMP_SAL ON EMP(SAL); -- 검색 속도 향상
@@ -599,8 +599,8 @@ INSERT INTO emp6 VALUES (7839, 'KING', 5000);
 INSERT INTO emp6 VALUES (7698, 'BLAKE', 2850);
 INSERT INTO emp6 VALUES (7782, 'CLARK', 2450);
 INSERT INTO emp6 VALUES (7839, 'JONES', 2975);
-UPDATE emp6 SET sal = 9000 WHERE ename = 'CLARK'; -- 오류
-INSERT INTO emp6 VALUES (7566, 'ADAMS', 9000); -- 오류
+--UPDATE emp6 SET sal = 9000 WHERE ename = 'CLARK'; -- 오류
+--INSERT INTO emp6 VALUES (7566, 'ADAMS', 9000); -- 오류
 
 ALTER TABLE emp6 DROP CONSTRAINT emp6_sal_ck; -- 범위 삭제
 INSERT INTO emp6 VALUES (7566, 'ADAMS', 9000); -- 정상 작동
@@ -621,7 +621,7 @@ ENAME VARCHAR2(20),
 SAL NUMBER(10),
 DEPTNO NUMBER(10) CONSTRAINT EMP7_DEPTNO_FK REFERENCES DEPT7(DEPTNO)); -- 외래키(FK) 특정 데이터와 연동
 
-ALTER TABLE DEPT7 DROP CONSTRAINT DEPT7_DEPTNO_PK; -- 오류(고유값 삭제 불가능)
+--ALTER TABLE DEPT7 DROP CONSTRAINT DEPT7_DEPTNO_PK; -- 오류(고유값 삭제 불가능)
 ALTER TABLE DEPT7 DROP CONSTRAINT DEPT7_DEPTNO_PK cascade; -- 삭제 가능(EMP7의 외래키도 삭제)
 
 WITH JOB_SUMSAL AS (SELECT JOB, SUM(SAL) as 토탈 FROM EMP GROUP BY JOB)
@@ -632,7 +632,7 @@ WITH JOB_SUMSAL AS (SELECT JOB, SUM(SAL) 토탈 FROM EMP GROUP BY JOB),
 DEPTNO_SUMSAL AS (SELECT DEPTNO, SUM(SAL) 토탈 FROM EMP GROUP BY DEPTNO HAVING SUM(SAL) > (SELECT AVG(토탈) + 3000 FROM JOB_SUMSAL))
 SELECT DEPTNO, 토탈 FROM DEPTNO_SUMSAL;
 SELECT DEPTNO, SUM(SAL) 토탈 FROM (SELECT JOB, SUM(SAL) 토탈 FROM EMP GROUP BY JOB) AS JOB_SUMSAL,
-(SELECT DEPTNO, SUM(SAL) 토탈 FROM EMP GROUP BY DEPTNO HAVING SUM(SAL) > (SELECT AVG(토탈) + 3000 FROM JOB_SUMSAL)) DEPTNO_SUMSAL; -- 오류
+--(SELECT DEPTNO, SUM(SAL) 토탈 FROM EMP GROUP BY DEPTNO HAVING SUM(SAL) > (SELECT AVG(토탈) + 3000 FROM JOB_SUMSAL)) DEPTNO_SUMSAL; -- 오류
 
 WITH LOOP_TABLE as (SELECT LEVEL as NUM FROM DUAL CONNECT BY LEVEL <= 9)
 SELECT '2' || ' x ' || NUM || ' = ' || 2 * NUM AS "2단" FROM LOOP_TABLE;
